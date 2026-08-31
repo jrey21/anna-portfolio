@@ -22,11 +22,16 @@
         <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
         <a href="mailto:angelnovy2003@gmail.com" aria-label="Email"><i class="fa-regular fa-envelope"></i></a>
       </div>
-      <nav class="nav-links">
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#portfolio">Portfolio</a>
-        <a href="#contact" class="nav-contact-btn">Contact</a>
+
+      <button class="menu-toggle" id="mobile-menu" aria-label="Toggle navigation" aria-expanded="false">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <nav class="nav-links" id="nav-links">
+        <a href="#about" class="nav-item">About</a>
+        <a href="#services" class="nav-item">Services</a>
+        <a href="#portfolio" class="nav-item">Portfolio</a>
+        <a href="#contact" class="nav-item nav-contact-btn">Contact</a>
       </nav>
     </div>
   </header>
@@ -183,10 +188,34 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+      // Mobile Navigation Toggle
+      const menuBtn = document.getElementById("mobile-menu");
+      const navLinks = document.getElementById("nav-links");
+      const navItems = document.querySelectorAll(".nav-item");
+
+      menuBtn.addEventListener("click", () => {
+        const isOpen = navLinks.classList.toggle("open");
+        menuBtn.setAttribute("aria-expanded", isOpen);
+        const icon = menuBtn.querySelector("i");
+        icon.classList.toggle("fa-bars", !isOpen);
+        icon.classList.toggle("fa-xmark", isOpen);
+      });
+
+      navItems.forEach(link => {
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("open");
+          menuBtn.setAttribute("aria-expanded", "false");
+          const icon = menuBtn.querySelector("i");
+          icon.classList.add("fa-bars");
+          icon.classList.remove("fa-xmark");
+        });
+      });
+
+      // Scroll Animations
       const reveals = document.querySelectorAll(".reveal, .reveal-scale, .reveal-slide-left, .reveal-slide-right");
 
       const revealOnScroll = () => {
-        const triggerBottom = window.innerHeight * 0.88;
+        const triggerBottom = window.innerHeight * 0.9;
         reveals.forEach((element) => {
           const elementTop = element.getBoundingClientRect().top;
           if (elementTop < triggerBottom) {
@@ -196,7 +225,7 @@
       };
 
       window.addEventListener("scroll", revealOnScroll);
-      revealOnScroll(); // Trigger initial view check
+      revealOnScroll();
     });
   </script>
 </body>
